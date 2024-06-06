@@ -8,6 +8,7 @@ provider "google" {
 # then trigger release of that image to the pipeline
 resource "google_cloudbuild_trigger" "github-trigger" {
   name        = "github-trigger"
+  # triggers aren't allowed in our prefered us-south1 region for some reason
   location    = "us-central1"
 
   github {
@@ -24,15 +25,15 @@ resource "google_cloudbuild_trigger" "github-trigger" {
 # gives permissions to our github-trigger to execute cloudbuild 
 # releases to pipeline
 resource "google_project_iam_member" "cloudbuild_releaser" {
-  project = "climbing-app-424905"
+  project = var.project_id
   role    = "roles/clouddeploy.releaser"
-  member  = "serviceAccount:221746684991@cloudbuild.gserviceaccount.com"
+  member  = "serviceAccount:${var.service_account_number}@cloudbuild.gserviceaccount.com"
 }
 
 # cloud run service (like a lambda)
 resource "google_cloud_run_service" "default" {
   name     = "beta-cloud-run"
-  location = "us-south1"
+  location = var.default_region
 
   template {
     spec {
@@ -55,7 +56,7 @@ traffic {
 }
 
 resource "google_clouddeploy_target" "primary" {
-  location          = "us-south1"
+  location          = var.default_region
   name              = "beta"
   deploy_parameters = {}
   description       = "Cloud run deployment target"
@@ -65,18 +66,18 @@ resource "google_clouddeploy_target" "primary" {
     execution_timeout = "3600s"
   }
 
-  project          = "climbing-app-424905"
+  project          = var.project_id
   require_approval = false
 
   run {
-    location = "projects/climbing-app-424905/locations/us-south1"
+    location = "projects/${var.project_id}/locations/${var.default_region}"
   }
 }
 
 
 # deployment pipeline
 resource "google_clouddeploy_delivery_pipeline" "primary" {
-  location = "us-south1"
+  location = var.default_region
   name = "climb-service-pipeline"
   description = "Pipeline to deploy climb service changes."
 
@@ -88,23 +89,23 @@ resource "google_clouddeploy_delivery_pipeline" "primary" {
 }
 
 resource "google_service_account_iam_binding" "allow_cloudbuild_to_impersonate" {
-  service_account_id = "projects/climbing-app-424905/serviceAccounts/221746684991-compute@developer.gserviceaccount.com"
+  service_account_id = "projects/${var.project_id}/serviceAccounts/${var.service_account_number}-compute@developer.gserviceaccount.com"
   role               = "roles/iam.serviceAccountUser"
   members            = [
-    "serviceAccount:221746684991@cloudbuild.gserviceaccount.com",
+    "serviceAccount:${var.service_account_number}@cloudbuild.gserviceaccount.com",
   ]
 }
 resource "google_project_iam_binding" "cloud_build_builder" {
-  project = "climbing-app-424905"
+  project = var.project_id
   role    = "roles/cloudbuild.builds.builder"
   members = [
-    "serviceAccount:221746684991@cloudbuild.gserviceaccount.com",
+    "serviceAccount:${var.service_account_number}@cloudbuild.gserviceaccount.com",
   ]
 }
 resource "google_project_iam_binding" "storage_admin" {
-  project = "climbing-app-424905"
+  project = var.project_id
   role    = "roles/storage.admin"
   members = [
-    "serviceAccount:221746684991@cloudbuild.gserviceaccount.com",
+    "serviceAccount:${var.service_account_number}@cloudbuild.gserviceaccount.com",
   ]
 }
