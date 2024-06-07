@@ -19,6 +19,12 @@ resource "google_cloudbuild_trigger" "github-trigger" {
     }
   }
 
+  substitutions = {
+    _PROJECT_ID = var.project_id
+    _DEFAULT_REGION = var.default_region
+    _PIPELINE_NAME = "climb-service-pipeline"
+  }
+
   filename = "cloudbuild.yaml"
 }
 
