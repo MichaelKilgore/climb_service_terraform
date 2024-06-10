@@ -76,7 +76,7 @@ resource "google_clouddeploy_target" "beta" {
   require_approval = false
 
   run {
-    location = "projects/${var.project_id}/locations/${var.default_region}"
+    location = "projects/${var.project_id}/locations/${var.default_region}/services/beta-cloud-run"
   }
 }
 
