@@ -2,6 +2,7 @@ resource "google_cloudbuild_trigger" "github-trigger" {
   name        = "github-trigger"
   # triggers aren't allowed in our prefered us-south1 region for some reason
   location    = "us-central1"
+  project     = var.project_id
 
   github {
     owner = "MichaelKilgore"

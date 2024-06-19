@@ -16,3 +16,4 @@ resource "google_clouddeploy_target" "beta" {
     location = "projects/${var.project_id}/locations/${var.default_region}"
   }
 }
+# beta-cloud-run
