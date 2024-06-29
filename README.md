@@ -24,3 +24,15 @@ dns_zone = "climb-service-dev"
 ## Notes
 
 1. Domain Mapping can take a while to actual finish. (It took me 13 mins)
+
+## SQL Notes
+
+gcloud components install cloud_sql_proxy
+
+gcloud beta sql connect  postgres-instance
+
+gcloud sql users set-password postgres \
+--instance=postgres-instance \
+--password=XXXXXX
+
+SELECT * FROM climbing_location;

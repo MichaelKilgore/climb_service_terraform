@@ -69,7 +69,7 @@ resource "google_cloud_run_domain_mapping" "beta-domain-mapping" {
 
 ############### SQL ######################
 resource "google_sql_database_instance" "beta-postgres-instance" {
-  name             = "postgres-instance"
+  name             = "beta-postgres-instance"
   database_version = "POSTGRES_13"
   region           = var.default_region
   project  = var.project_id
