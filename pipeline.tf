@@ -7,7 +7,7 @@ resource "google_clouddeploy_delivery_pipeline" "pipeline" {
   serial_pipeline {
     stages {
       target_id = google_clouddeploy_target.beta.target_id
-      profiles = ["beta-profile"]
+      profiles = ["beta"]
     }
   }
 }
