@@ -36,3 +36,7 @@ gcloud sql users set-password postgres \
 --password=XXXXXX
 
 SELECT * FROM climbing_location;
+
+## Notes
+
+I manually created a trigger-service-account and set the build trigger to use that account. TODO: make it so its deployed from terraform
