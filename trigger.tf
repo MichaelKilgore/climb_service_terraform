@@ -16,6 +16,7 @@ resource "google_cloudbuild_trigger" "github-trigger" {
     _PROJECT_ID = var.project_id
     _DEFAULT_REGION = var.default_region
     _PIPELINE_NAME = "climb-service-pipeline"
+    _GOOGlE_MAPS_API_KEY = var.google_maps_api_key
   }
 
   filename = "cloudbuild.yaml"

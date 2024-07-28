@@ -28,3 +28,8 @@ variable "dns_zone" {
   type        = string
 }
 
+variable "google_maps_api_key" {
+  description = "The google maps api key used for getting the latitude and longitude of an address"
+  type        = string
+}
+
