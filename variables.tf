@@ -33,3 +33,18 @@ variable "google_maps_api_key" {
   type        = string
 }
 
+variable "twilio_account_service_id" {
+  description = "account service id is like an id for my twilio account"
+  type        = string
+}
+
+variable "twilio_verify_service_id" {
+  description = "The service id for the verify service. (Your twilio account can have multiple verify services and this is the id for one of them)"
+  type        = string
+}
+
+variable "twilio_auth_token" {
+  description = "The service account has an auth token used for twilio requests"
+  type        = string
+}
+

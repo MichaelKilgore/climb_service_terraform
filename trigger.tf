@@ -3,6 +3,7 @@ resource "google_cloudbuild_trigger" "github-trigger" {
   # triggers aren't allowed in our prefered us-south1 region for some reason
   location    = "us-central1"
   project     = var.project_id
+  service_account = "projects/climbing-app-426701/serviceAccounts/trigger-service-account@climbing-app-426701.iam.gserviceaccount.com"
 
   github {
     owner = "MichaelKilgore"
@@ -16,7 +17,10 @@ resource "google_cloudbuild_trigger" "github-trigger" {
     _PROJECT_ID = var.project_id
     _DEFAULT_REGION = var.default_region
     _PIPELINE_NAME = "climb-service-pipeline"
-    _GOOGlE_MAPS_API_KEY = var.google_maps_api_key
+    _GOOGLE_MAPS_API_KEY = var.google_maps_api_key
+    _TWILIO_ACCOUNT_SERVICE_ID = var.twilio_account_service_id
+    _TWILIO_VERIFY_SERVICE_ID = var.twilio_verify_service_id
+    _TWILIO_AUTH_TOKEN = var.twilio_auth_token
   }
 
   filename = "cloudbuild.yaml"

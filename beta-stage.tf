@@ -1,24 +1,3 @@
-resource "google_cloud_run_service" "beta-cloud-run" {
-  name     = "beta-cloud-run"
-  location = var.default_region
-  project  = var.project_id
-
-  template {
-    spec {
-      containers {
-        image = "us-docker.pkg.dev/cloudrun/container/hello"
-      }
-    }
-
-    metadata {
-      annotations = {
-        "run.googleapis.com/cloudsql-instances" = google_sql_database_instance.beta-postgres-instance.connection_name
-      }
-    }
-  }
-  autogenerate_revision_name = true
-}
-
 # deploy target (automatically creates the cloud run instance)
 resource "google_clouddeploy_target" "beta" {
   location          = var.default_region
@@ -63,8 +42,6 @@ resource "google_cloud_run_domain_mapping" "beta-domain-mapping" {
   spec {
     route_name = "beta-cloud-run"
   }
-
-  depends_on = [google_cloud_run_service.beta-cloud-run]
 }
 
 ############### SQL ######################
