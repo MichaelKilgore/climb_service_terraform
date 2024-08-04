@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS climb_route CASCADE;
 DROP TABLE IF EXISTS phone_validation CASCADE;
 DROP TABLE IF EXISTS climb_user CASCADE;
 DROP TABLE IF EXISTS climb_location CASCADE;
+DROP TABLE IF EXISTS report_route CASCADE;
 
 CREATE TABLE climb_location (
   climb_location_id SERIAL PRIMARY KEY,
@@ -86,3 +87,22 @@ INSERT INTO climb_route (name, grade, climb_location_id, latitude, longitude, de
 VALUES ('route', '1', 1, 100, 100, 'desc', 'video', 1);
 
 CREATE INDEX climb_route_geom_idx ON climb_route USING GIST (geom);
+
+DROP TYPE IF EXISTS violation_type;
+CREATE TYPE violation_type AS ENUM ('ROUTE_DOES_NOT_EXIST', 'IMPROPER_CONTENT', 'OTHER');
+
+CREATE TABLE report_route (
+	climb_route_report_id SERIAL PRIMARY KEY,
+	climb_user_id INTEGER NOT NULL,
+	FOREIGN KEY (climb_user_id) REFERENCES climb_user(climb_user_id),
+	climb_route_id INTEGER NOT NULL,
+	FOREIGN KEY (climb_route_id) REFERENCES climb_route(climb_route_id),
+	violation violation_type NOT NULL,
+	violation_description TEXT NOT NULL
+);
+
+INSERT INTO report_route (climb_user_id, climb_route_id, violation, violation_description)
+VALUES (1, 1, 'ROUTE_DOES_NOT_EXIST', '');
+
+INSERT INTO report_route (climb_user_id, climb_route_id, violation, violation_description)
+VALUES (1, 1, 'OTHER', 'This is a custom description');
