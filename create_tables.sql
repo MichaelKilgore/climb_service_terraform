@@ -45,7 +45,7 @@ VALUES ('Bull Creek District Park', '/images/bull-creek-park.jpg', '', '6701 Lak
 CREATE TABLE climb_user (
   climb_user_id SERIAL PRIMARY KEY,
   user_name VARCHAR(200) UNIQUE,
-  phone_number VARCHAR(15) UNIQUE CHECK(phone_number ~ '^[0-9]{0,15}$'),
+  phone_number VARCHAR(15) CHECK(phone_number ~ '^[0-9]{0,15}$'),
   status VARCHAR(50) CHECK (status IN ('CONTRIBUTOR', 'COMMENTOR', 'VIEWER')),
   moderator_comments TEXT NOT NULL
 );
