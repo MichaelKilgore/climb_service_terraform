@@ -1,7 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 DROP TABLE IF EXISTS climb_route CASCADE;
-DROP TABLE IF EXISTS phone_validation CASCADE;
 DROP TABLE IF EXISTS climb_user CASCADE;
 DROP TABLE IF EXISTS climb_location CASCADE;
 
@@ -45,7 +44,7 @@ VALUES ('Bull Creek District Park', '/images/bull-creek-park.jpg', '', '6701 Lak
 CREATE TABLE climb_user (
   climb_user_id SERIAL PRIMARY KEY,
   user_name VARCHAR(200) UNIQUE,
-  phone_number VARCHAR(15) CHECK(phone_number ~ '^[0-9]{0,15}$'),
+  phone_number VARCHAR(15) CHECK(phone_number ~ '^\+[0-9]{0,15}$'),
   status VARCHAR(50) CHECK (status IN ('CONTRIBUTOR', 'COMMENTOR', 'VIEWER')),
   moderator_comments TEXT NOT NULL
 );
@@ -53,11 +52,6 @@ CREATE TABLE climb_user (
 INSERT INTO climb_user (user_name, status, moderator_comments)
 VALUES ('michael', 'CONTRIBUTOR', '');
 
-CREATE TABLE phone_validation (
-  phone_number VARCHAR(15) UNIQUE CHECK(phone_number ~ '^[0-9]{0,15}$') PRIMARY KEY,
-  creation_time TIMESTAMP NOT NULL,
-  code VARCHAR(6) CHECK(code ~ '^[0-9]{0,6}$') NOT NULL
-);
 
 CREATE TABLE climb_route (
 	climb_route_id SERIAL PRIMARY KEY,
